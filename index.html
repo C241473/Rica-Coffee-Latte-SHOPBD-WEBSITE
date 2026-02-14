@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BODRIN Coffee - Bangladesh</title>  
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+html{scroll-behavior:smooth;} /* smooth scroll for anchor links */
+
+body{
+background: linear-gradient(rgba(25,15,10,0.9),rgba(25,15,10,0.9)),
+url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1600');
+background-size:cover;background-attachment:fixed;background-position:center;
+color:white;overflow-x:hidden;
+}
+
+/* HEADER */
+header{
+display:flex;justify-content:space-between;align-items:center;
+padding:20px 8%;position:relative;
+}
+
+.logo{
+font-size:28px;font-weight:700;display:flex;align-items:center;gap:10px;
+}
+
+.logo .icon{
+font-size:32px;color:#f4c27a;
+}
+
+nav a{margin:0 15px;text-decoration:none;color:#ddd;font-weight:500;}
+nav a:hover{color:#f4c27a;}
+
+.btn{
+padding:10px 22px;border:none;border-radius:25px;
+background:#7cc6c6;color:black;cursor:pointer;font-weight:600;
+transition:0.3s;
+}
+.btn:hover{background:#5ab3b3;transform:scale(1.05);}
+
+/* CART */
+.cart-icon{
+position:relative;cursor:pointer;font-size:20px;display:flex;align-items:center;
+}
+.cart-count{
+margin-left:6px;
+background:red;color:white;
+font-size:12px;padding:2px 6px;border-radius:50%;
+}
+.cart-dropdown{
+position:absolute;right:8%;top:80px;width:300px;background:#1a0f0b;
+padding:15px;border-radius:10px;display:none;max-height:350px;overflow-y:auto;
+}
+.cart-item{display:flex;justify-content:space-between;margin-bottom:8px;font-size:14px;}
+.cart-item button{
+background:red;border:none;color:white;padding:2px 6px;border-radius:4px;cursor:pointer;
+}
+.cart-total{margin-top:10px;font-weight:600;color:#f4c27a;}
+.place-order{
+margin-top:10px;width:100%;padding:8px;border:none;border-radius:20px;
+background:#7cc6c6;cursor:pointer;transition:0.3s;
+}
+.place-order:hover{background:#5ab3b3;transform:scale(1.05);}
+
+/* HERO */
+.hero{display:flex;align-items:center;justify-content:space-between;padding:80px 8%;flex-wrap:wrap;}
+.hero-text{max-width:550px;}
+.hero-text h1{font-size:50px;margin-bottom:20px;}
+.hero-text p{color:#ddd;margin-bottom:25px;}
+.hero img{width:420px;}
+
+/* PRODUCTS */
+.products{padding:80px 8%;text-align:center;}
+.products h2{font-size:34px;margin-bottom:50px;}
+.product-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;}
+.card{
+background:rgba(255,255,255,0.08);
+padding:30px;
+border-radius:20px;
+text-align:center;
+transition:0.4s;
+}
+.card:hover{
+transform:translateY(-10px);
+background:rgba(255,255,255,0.12);
+}
+.card img{width:160px;margin-bottom:20px;}
+.price{margin:15px 0;font-weight:600;color:#f4c27a;}
+
+/* ADD TO CART HOVER EFFECT */
+.add-btn{
+background:#7cc6c6;
+border:none;
+padding:10px 20px;
+border-radius:25px;
+cursor:pointer;
+font-weight:600;
+transition:all 0.3s ease;
+}
+.add-btn:hover{
+background:#f4c27a;
+color:black;
+transform:scale(1.1);
+box-shadow:0 8px 20px rgba(244,194,122,0.6);
+}
+
+/* ABOUT */
+.about{
+padding:80px 8%;
+text-align:center;
+background:rgba(0,0,0,0.4);
+margin-top:60px;
+}
+.about h2{font-size:32px;margin-bottom:25px;}
+.about p{max-width:800px;margin:auto;color:#ccc;line-height:1.8;}
+
+/* FOOTER */
+footer{
+padding:40px;
+background:#140b08;
+margin-top:40px;
+color:#aaa;
+position:relative;
+text-align:center;
+}
+footer .contact-info{
+position:absolute;
+right:20px;
+bottom:10px;
+text-align:right;
+font-size:14px;
+color:#ddd;
+line-height:1.4;
+}
+
+/* HEADER RIGHT SIDE FLEX WITH GAP */
+.header-right{
+display:flex;
+align-items:center;
+gap:20px;
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">
+<span class="icon">☕</span>
+<div>Rica Coffee & Latte SHOPBD</div>
+</div>
+
+<nav>
+<a href="#hero">Home</a>
+<a href="menu.html">Menu</a>
+<a href="#about">About</a>
+<a href="#footer">Contact</a> <!-- Smooth scroll to footer -->
+</nav>
+
+<div class="header-right">
+<div class="cart-icon" onclick="toggleCart()"> 
+🛒<span class="cart-count" id="cartCount">0</span>
+</div>
+<button class="btn" onclick="goToMenu()">Order Now</button>
+</div>
+
+<div class="cart-dropdown" id="cartDropdown">
+<div id="cartItems"></div>
+<div class="cart-total">Total: ৳<span id="cartTotal">0</span></div>
+<button class="place-order" onclick="goToMenu()">Place Order</button>
+</div>
+</header>
+
+<section class="hero" id="hero">
+<div class="hero-text">
+<h1>Discover Premium Coffee in Every Sip</h1>
+<p>We craft high-quality Coffee & Latte made from selected beans. Enjoy rich flavor, smooth texture, and unforgettable aroma.</p>
+<button class="btn" onclick="goToMenu()">Explore Menu</button>
+</div>
+<img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600">
+</section>
+
+<section class="products">
+<h2>Our Signature Items</h2>
+<div class="product-grid">
+
+<div class="card">
+<img src="cuppachino.jpeg">
+<h3>Cappuccino</h3>
+<div class="price">350</div>
+<button class="add-btn" onclick="addToCart('Cappuccino',350)">Add to Cart</button>
+</div>
+
+<div class="card">
+<img src="latte coffee.jpeg">
+<h3>Latte Coffee</h3>
+<div class="price">400</div>
+<button class="add-btn" onclick="addToCart('Latte',400)">Add to Cart</button>
+</div>
+
+<div class="card">
+<img src="mocha.jpeg">
+<h3>Mocha</h3>
+<div class="price">420</div>
+<button class="add-btn" onclick="addToCart('Mocha',420)">Add to Cart</button>
+</div>
+
+</div>
+</section>
+
+<section class="about" id="about">
+<h2>About Rica Coffee</h2>
+<p>
+Rica Latte & Coffee is a premium brand in Bangladesh, dedicated to delivering high-quality,
+freshly brewed beverages made from carefully selected beans. Our mission is to create a relaxing
+and modern coffee experience where every sip of our Latte or Coffee brings comfort, energy, and pure satisfaction.
+</p>
+</section>
+
+<footer id="footer">
+© 2026 Rica Coffee & Latte SHOPBD | All Rights Reserved | made by NAZEHA
+<div class="contact-info">
+Email: nazehamoshara23@gmail.com<br>
+Contact No: 000000000000<br>
+Address: Feni, Bangladesh
+</div>
+</footer>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function saveCart(){localStorage.setItem("cart",JSON.stringify(cart));}
+
+function addToCart(name,price){
+let existing = cart.find(item=>item.name===name);
+if(existing){ existing.quantity +=1; }
+else{ cart.push({name,price,quantity:1}); }
+saveCart();
+renderCart();
+}
+
+function renderCart(){
+let cartItems=document.getElementById("cartItems");
+let cartCount=document.getElementById("cartCount");
+let cartTotal=document.getElementById("cartTotal");
+
+cartItems.innerHTML="";
+let total=0; let count=0;
+
+cart.forEach((item,index)=>{
+total += item.price * item.quantity;
+count += item.quantity;
+
+cartItems.innerHTML += `
+<div class="cart-item">
+${item.name} x${item.quantity}
+<button onclick="removeItem(${index})">X</button>
+</div>`;
+});
+
+cartCount.innerText=count;
+cartTotal.innerText=total;
+}
+
+function removeItem(index){
+cart.splice(index,1);
+saveCart();
+renderCart();
+}
+
+function toggleCart(){
+let dropdown=document.getElementById("cartDropdown");
+dropdown.style.display = dropdown.style.display==="block"?"none":"block";
+}
+
+function goToMenu(){window.location.href="menu.html";}
+
+renderCart();
+</script>
+
+</body>
+</html>

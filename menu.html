@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BODRIN Coffee - Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{
+background: linear-gradient(rgba(25,15,10,0.9),rgba(25,15,10,0.9)),
+url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1600');
+background-size:cover;background-attachment:fixed;background-position:center;color:white;
+}
+header{
+display:flex;justify-content:space-between;align-items:center;padding:20px 8%;
+}
+.logo{
+font-size:28px;font-weight:700;display:flex;align-items:center;gap:10px;
+}
+.logo .icon{
+font-size:32px;color:#f4c27a;
+}
+.menu-section{padding:60px 8%;}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;}
+.card{background:rgba(255,255,255,0.08);padding:20px;border-radius:20px;text-align:center;}
+.card img{width:120px;margin-bottom:10px;border-radius:10px;}
+.price{color:#f4c27a;margin:8px 0;}
+.quantity{display:flex;justify-content:center;gap:10px;}
+.quantity button{padding:5px 12px;border:none;border-radius:5px;cursor:pointer;}
+.total-box{text-align:center;margin-top:30px;font-size:20px;}
+.order-form{max-width:500px;margin:40px auto;background:rgba(255,255,255,0.08);padding:25px;border-radius:20px;}
+.order-form input,.order-form textarea{width:100%;padding:10px;margin:10px 0;border:none;border-radius:8px;}
+.order-form button{width:100%;padding:12px;border:none;border-radius:25px;background:#7cc6c6;font-weight:600;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">
+<span class="icon">☕</span>
+<div>Rica Coffee & Latte SHOPBD</div>
+</div>
+</header>
+
+<section class="menu-section">
+<h1 style="text-align:center;margin-bottom:40px;">Coffee & Latte Special Menu</h1>
+
+<div class="menu-grid" id="menuGrid"></div>
+
+<div class="total-box">
+Total: ৳<span id="total">0</span>
+</div>
+
+<div class="order-form">
+<h2>Customer Information</h2>
+<input type="text" id="name" placeholder="Your Name">
+<input type="text" id="phone" placeholder="Phone Number">
+<textarea id="address" rows="3" placeholder="Delivery Address"></textarea>
+<button onclick="placeOrder()">Place Order</button>
+</div>
+
+</section>
+
+<script>
+let latteItems = [
+    {name:"Regular Coffee", price:380, img:"rglr.jpeg"},
+    {name:"Latte Coffee", price:380, img:"latte coffee.jpeg"},
+    {name:"Caramel Latte", price:385, img:"caramel.jpeg"},
+    {name:"Vanilla Latte", price:390, img:"vanilla.jpeg"},
+    {name:"Hazelnut Latte", price:395, img:"nut.jpeg"},
+    {name:"Chocolate Latte", price:400, img:"choclate.jpeg"},
+    {name:"Iced Latte", price:405, img:"ice.jpeg"},
+    {name:"Coconut Latte", price:410, img:"coconut.jpeg"},
+    {name:"Almond Latte", price:415, img:"almond.jpeg"},
+    {name:"Mocha", price:420, img:"mocha.jpeg"},
+    {name:"White Chocolate Latte", price:425, img:"white.jpeg"},
+    {name:"Mint Latte", price:435, img:"mint.jpeg"},
+    {name:"Cappuccino", price:440, img:"cuppachino.jpeg"},
+    {name:"Blueberry Latte", price:445, img:"blue.jpeg"},
+    {name:"Honey Latte", price:450, img:"honey.jpeg"},
+    {name:"Brown Sugar Coffee", price:455, img:"brown.jpeg"},
+    {name:"Matcha", price:460, img:"matcha.jpeg"},
+    {name:"Oat Latte", price:465, img:"oat.jpeg"},
+    {name:"Cinnamon Coffee", price:470, img:"cinnamon.jpeg"},
+    {name:"Velorica Special", price:480, img:"velorica.jpeg"}
+];
+
+let menuGrid = document.getElementById("menuGrid");
+
+latteItems.forEach(item=>{
+menuGrid.innerHTML += `
+<div class="card" data-name="${item.name}" data-price="${item.price}">
+<img src="${item.img}" alt="${item.name}">
+<h3>${item.name}</h3>
+<div class="price">৳${item.price}</div>
+<div class="quantity">
+<button onclick="changeQty(this,-1)">-</button>
+<span class="qty">0</span>
+<button onclick="changeQty(this,1)">+</button>
+</div>
+</div>
+`;
+});
+
+function changeQty(button, amount){
+let card = button.closest('.card');
+let qtySpan = card.querySelector('.qty');
+let qty = parseInt(qtySpan.innerText);
+qty += amount;
+if(qty < 0) qty = 0;
+qtySpan.innerText = qty;
+calculateTotal();
+}
+
+function calculateTotal(){
+let cards = document.querySelectorAll('.card');
+let total = 0;
+cards.forEach(card=>{
+let price = parseInt(card.dataset.price);
+let qty = parseInt(card.querySelector('.qty').innerText);
+total += price * qty;
+});
+document.getElementById('total').innerText = total;
+}
+
+function placeOrder(){
+let name = document.getElementById("name").value;
+let phone = document.getElementById("phone").value;
+let address = document.getElementById("address").value;
+
+if(name=="" || phone=="" || address==""){
+alert("Please fill all customer information!");
+return;
+}
+
+let selectedItems = [];
+let cards = document.querySelectorAll('.card');
+
+cards.forEach(card=>{
+let qty = parseInt(card.querySelector('.qty').innerText);
+if(qty > 0){
+selectedItems.push({
+name: card.dataset.name,
+price: card.dataset.price,
+quantity: qty
+});
+}
+});
+
+if(selectedItems.length == 0){
+alert("Please select at least one coffee.");
+return;
+}
+
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+orders.push({
+customerName: name,
+phone: phone,
+address: address,
+items: selectedItems,
+date: new Date().toLocaleString()
+});
+
+localStorage.setItem("orders", JSON.stringify(orders));
+
+window.location.href = "order.html";
+}
+</script>
+
+</body>
+</html>

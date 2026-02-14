@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BODRIN - Orders</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+
+body{
+background: linear-gradient(rgba(25,15,10,0.9),rgba(25,15,10,0.9)),
+url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1600');
+background-size:cover;background-attachment:fixed;background-position:center;color:white;
+padding:50px 8%;
+}
+
+h1{text-align:center;margin-bottom:40px;}
+
+.order-card{
+background:rgba(255,255,255,0.08);
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+.order-card h3{margin-bottom:10px;}
+
+.item{
+margin-bottom:5px;
+}
+
+.total{
+margin-top:10px;
+font-weight:600;
+color:#f4c27a;
+}
+
+button{
+padding:6px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin-right:10px;
+margin-top:10px;
+}
+
+.delete-btn{background:#ff5c5c;color:white;}
+.complete-btn{background:#5cb85c;color:white;}
+</style>
+</head>
+<body>
+
+<h1>Order List</h1>
+
+<div id="orderList"></div>
+
+<script>
+
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+function renderOrders(){
+let list = document.getElementById("orderList");
+list.innerHTML = "";
+
+orders.forEach((order,index)=>{
+
+let itemsHTML = "";
+let orderTotal = 0;
+
+order.items.forEach(item=>{
+let price = parseInt(item.price);
+let qty = parseInt(item.quantity);
+let subtotal = price * qty;
+orderTotal += subtotal;
+
+itemsHTML += `
+<div class="item">
+${item.name} — ৳${price} × ${qty} = ৳${subtotal}
+</div>
+`;
+});
+
+list.innerHTML += `
+<div class="order-card">
+<h3>${order.customerName}</h3>
+<p>Phone: ${order.phone}</p>
+<p>Address: ${order.address}</p>
+<p>Date: ${order.date}</p>
+<br>
+${itemsHTML}
+<div class="total">Total: ৳${orderTotal}</div>
+<br>
+<button class="delete-btn" onclick="deleteOrder(${index})">Delete</button>
+<button class="complete-btn" onclick="completeOrder(${index})">Complete</button>
+</div>
+`;
+});
+}
+
+function deleteOrder(index){
+orders.splice(index,1);
+localStorage.setItem("orders", JSON.stringify(orders));
+renderOrders();
+}
+
+function completeOrder(index){
+orders.splice(index,1);
+localStorage.setItem("orders", JSON.stringify(orders));
+renderOrders();
+alert("Order Completed Successfully!");
+}
+
+renderOrders();
+
+</script>
+
+</body>
+</html>
